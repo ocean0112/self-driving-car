@@ -91,6 +91,9 @@
   <ItemGroup>
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="motor.h" />
+  </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>

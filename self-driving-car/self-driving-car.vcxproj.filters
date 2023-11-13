@@ -22,4 +22,9 @@
   <ItemGroup>
     <ClCompile Include="self-driving-car.ino" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="motor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
