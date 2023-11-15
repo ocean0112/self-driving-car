@@ -1,6 +1,6 @@
 #include <Servo.h>
-#include <motor.h>
-#include <ultrasonic.h>
+#include "motor.h"
+#include "ultrasonic.h"
 // servo const
 const byte SIGNAL_PIN;
 
@@ -30,9 +30,6 @@ const int DELAY = 2 * 1000;
 
 void loop()
 {
-    switch(){
-
-    }
     Serial.println("foward...");
     leftMotor.run(Motor::MotorFoward);
     rightMotor.run(Motor::MotorFoward);
