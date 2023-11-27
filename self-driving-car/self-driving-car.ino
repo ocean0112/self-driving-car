@@ -1,13 +1,22 @@
 #include <Servo.h>
+#include <IRremote.h>
 #include "motor.h"
 #include "ultrasonic.h"
-// servo const
-const byte SIGNAL_PIN;
-
+#define IR_USE_AVR_TIMER1
+// servo pins
+const byte SIGNAL_PIN = A2;
+// remote pins
+const byte IR_RECEIVE_PIN = 12;
+bool tmMeasure = false;
 /*subject to change*/ const int TIMER1_VAL = -(250000 / (1 / (16/1024)));
-// Motor variables
+
+// Motor Objects
 Motor leftMotor;
 Motor rightMotor;
+
+// ultrasonic servo Object
+Ultrasonic us(A1, A0);
+Servo spin;
 
 // enum Movement
 enum Movement{
@@ -17,49 +26,102 @@ enum Movement{
   scan,
   stop
 }; //end enum Movement
-
+int speed = 100;
 void setup()
 {
     Serial.begin(9600);
+    
+    // sets up the servo
+    spin.attach(SIGNAL_PIN,500, 2500);  
+    
+    // sets left and right wheel
     leftMotor = Motor(H1A, H2A, H12EN);
     rightMotor = Motor(H3A, H4A, H34EN);
+    
+    // sets up ir remote
+    IrReceiver.begin(IR_RECEIVE_PIN, true);
+    
+    // sets speed once
+    rightMotor.setSpeed(speed);
+    leftMotor.setSpeed(speed);
 }
 
-byte speed = 0;
+
 const int DELAY = 2 * 1000;
+int measurefront = 0;
+int measureleft = 0;
+int measureright = 0;
 
 void loop()
 {
-    Serial.println("foward...");
-    leftMotor.run(Motor::MotorFoward);
-    rightMotor.run(Motor::MotorFoward);
-    delay(DELAY);
-
-    Serial.println("left...");
-    leftMotor.run(Motor::MotorReverse);
-    rightMotor.run(Motor::MotorFoward);
-    delay(DELAY);
-
-    Serial.println("foward...");
-    leftMotor.run(Motor::MotorReverse);
-    rightMotor.run(Motor::MotorReverse);
-    delay(DELAY);
-
-    Serial.println("right...");
-    leftMotor.run(Motor::MotorFoward);
-    rightMotor.run(Motor::MotorReverse);
-    delay(DELAY);
-
-    Serial.println("stop...");
-    leftMotor.run(Motor::MotorStop);
-    rightMotor.run(Motor::MotorStop);
-    delay(DELAY);
-
-    speed += 15;
-    Serial.print("speed: ");
-    Serial.println(speed);
-    rightMotor.setSpeed(speed);
-    leftMotor.setSpeed(speed);
+   
+    if (IrReceiver.decode()) {
+      switch(IrReceiver.decodedIRData.command){
+        case btn_2:
+          Serial.println(" used remote ... foward...");
+          leftMotor.run(Motor::MotorFoward);
+          rightMotor.run(Motor::MotorFoward);
+          break;
+        case btn_4:
+          Serial.println("used remote ... left...");
+            leftMotor.run(Motor::MotorReverse);
+            rightMotor.run(Motor::MotorFoward);
+            break;
+        case btn_6:
+          Serial.println("used remote ... right...");
+          leftMotor.run(Motor::MotorFoward);
+          rightMotor.run(Motor::MotorReverse);
+          break;
+        default:
+          Serial.println("used remote ... stop...");
+          leftMotor.run(Motor::MotorStop);
+          rightMotor.run(Motor::MotorStop);
+      }
+    }
+    if (tmMeasure) {
+        /* stop and scans*/
+        Serial.println("stop...");
+        leftMotor.run(Motor::MotorStop);
+        rightMotor.run(Motor::MotorStop);
+        
+        // perform measures on each direction (left, forward, right)
+        spin.write(90);
+        delay(1300);
+        measurefront = us.measureIN();
+        delay(100);
+        spin.write(180);
+        delay(1300);
+        measureright = us.measureIN();
+        delay(100);
+        spin.write(0);
+        delay(1300);
+        measureleft = us.measureIN();
+        delay(100);
+        
+        if (measurefront > 7 && measureright > 7 && measureleft > 7) {
+          Serial.println("stop...");
+          leftMotor.run(Motor::MotorStop);
+          rightMotor.run(Motor::MotorStop);
+        }
+        if (measureleft > measureright) {
+            Serial.println("left...");
+            leftMotor.run(Motor::MotorFoward);
+            rightMotor.run(Motor::MotorReverse);
+            delay(DELAY);
+        }
+        else {
+            Serial.println("right...");
+            leftMotor.run(Motor::MotorReverse);
+            rightMotor.run(Motor::MotorFoward);
+            delay(DELAY);
+        }
+    }
+    else {
+        Serial.println("foward...");
+        leftMotor.run(Motor::MotorFoward);
+        rightMotor.run(Motor::MotorFoward);
+        delay(DELAY);
+    }
 }
 
 // subjected to change

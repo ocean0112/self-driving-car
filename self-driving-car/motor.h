@@ -1,12 +1,19 @@
+
+// IR Remote enum
+enum BTNs{
+  btn_2 = 17,
+  btn_4 = 20,
+  btn_6 = 22
+};
 #pragma once
 // motor const might need be changed
-const int H1A;
-const int H2A;
-const int H12EN;
+const int H1A = 4;
+const int H2A = 2;
+const int H12EN = 5;
 
-const int H3A;
-const int H4A;
-const int H34EN;
+const int H3A = 8;
+const int H4A = 7;
+const int H34EN = 6;
 // class Motor
 class Motor {
 private:
@@ -53,3 +60,4 @@ public:
         } // which dir
     } // end run
 }; // end Motor
+

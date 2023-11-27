@@ -1,0 +1,36 @@
+﻿Visual Micro License has expired, or is not valid for this version or the trial has not been started.   [Tip: Press CTRL + Click to open links]
+
+This could happen for the following reasons:-
+
+- You have not yet started the full product trial?
+Please use the vMicro menu to activate Visual Micro.
+
+- You have a license key but have not used it to activate Visual Micro?
+Please use the vMicro menu to activate Visual Micro using your key.
+
+- You purchased an Annual / Yearly license 12 months ago?
+Please Visit our Shop to purchase a New License at - https://www.visualmicro.com/page/shop.aspx
+
+- If you have a perpetual license, And you have installed updates, And the support has expired?
+Please Visit our Shop to purchase Support at - https://www.visualmicro.com/page/shop.aspx#licInfo
+
+- If you have support, And you have re-installed your Operating System, Or have changed PC, Or do not expect license expiry?
+Please contact us via email at mailto:license@visualmicro.com, with your license key, And any additional information you can provide.
+
+- If you want to Uninstall the Visual Micro Extension please see:
+https://www.visualmicro.com/page/How-to-uninstall-the-arduino-addin-for-visual-studio.aspx
+- Visual Micro -
+Intellisense was unable to find a board package.
+  To install hardware package(s) using 'Manage Boards', or configure an older Arduino 1x IDE location.
+     example: install the 'AVR' package for 'Arduino Uno' and 'Mega' boards, or see the auto discovery list at the top of board manager for other suggestions.
+Documentation can be found here https://www.visualmicro.com/page/User-Guide.aspx
+- Visual Micro -
+Intellisense was unable to find a board package.
+  To install hardware package(s) using 'Manage Boards', or configure an older Arduino 1x IDE location.
+     example: install the 'AVR' package for 'Arduino Uno' and 'Mega' boards, or see the auto discovery list at the top of board manager for other suggestions.
+Documentation can be found here https://www.visualmicro.com/page/User-Guide.aspx
+- Visual Micro -
+Intellisense was unable to find a board package.
+  To install hardware package(s) using 'Manage Boards', or configure an older Arduino 1x IDE location.
+     example: install the 'AVR' package for 'Arduino Uno' and 'Mega' boards, or see the auto discovery list at the top of board manager for other suggestions.
+Documentation can be found here https://www.visualmicro.com/page/User-Guide.aspx
