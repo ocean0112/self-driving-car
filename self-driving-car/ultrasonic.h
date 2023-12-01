@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #pragma once
 // class Ultrasonic 
 class Ultrasonic {
@@ -31,7 +32,8 @@ unsigned long Ultrasonic::measure() {
   noInterrupts();
   
   // setup  
-  pinMode(echoPin, INPUT);
+  pinMode(echoPin, OUTPUT);
+  //pinMode(echoPin, INPUT);
   digitalWrite(echoPin, LOW);
   
   // trigger a measurement
@@ -44,7 +46,7 @@ unsigned long Ultrasonic::measure() {
   
   // wait for 
   pinMode(echoPin, INPUT);
-  duration = pulseIn(echoPin, maxDuration);
+  duration = pulseIn(echoPin, HIGH,  maxDuration);
   
   // turn interrupts back on
   interrupts();
