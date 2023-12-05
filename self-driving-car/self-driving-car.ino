@@ -61,7 +61,7 @@ double wall = 7;
 void loop()
 {
   
-  if (IrReceiver.decode()) {
+  if (!IrReceiver.decode()) {
     switch(IrReceiver.decodedIRData.command){
       case btn_2:
         Serial.println(" used remote ... foward...");
@@ -96,25 +96,137 @@ void loop()
     spin.write(90);
     delay(1300);
     measurefront = us.measureIN();
+    Serial.println(measurefront);
     delay(1300);
     
     spin.write(180);
     delay(1300);
     measureleft = us.measureIN();
+    Serial.println(measureleft);
     delay(1300);
     
     spin.write(0);
     delay(1300);
     measureright = us.measureIN();
+    Serial.println(measureright);
     delay(1300);
-    if(measurefront > 7 && measureright > 7 && measureleft){
+
+
+    if(measurefront > 40 && measureright > 40 && measureleft > 40){
+      // final condition check
+      Serial.println("foward...");
+      leftMotor.run(Motor::MotorFoward);
+      rightMotor.run(Motor::MotorFoward);
+      delay(500);
       leftMotor.run(Motor::MotorStop);
       rightMotor.run(Motor::MotorStop);
-      delay(100000);
+      spin.write(90);
+      delay(1300);
+      double measurefinalfront = us.measureIN();
+      Serial.println(measurefinalfront);
+      delay(1300);
+      spin.write(90);
+      delay(1300);
+      double measurefinalleft = us.measureIN();
+      Serial.println(measurefinalleft);
+      delay(1300);
+      spin.write(90);
+      delay(1300);
+      double measurefinalright = us.measureIN();
+      Serial.println(measurefinalright);
+      delay(1300);
+      if (measurefinalfront > 40 && measurefinalleft > 40 && measurefinalright > 40){
+        Serial.print("out of maze");
+        leftMotor.run(Motor::MotorStop);
+        rightMotor.run(Motor::MotorStop);
+        delay(1000000);
+      }
+      else{
+        
+      }
     }
-    else if(measurefront > measureleft && measurefront > measureright){
-   
+    else if (measurefront < 2){
+      Serial.println("reverse");
+      leftMotor.setSpeed(10);
+      rightMotor.setSpeed(10);
+      rightMotor.run(Motor::MotorReverse);
+      leftMotor.run(Motor::MotorReverse);
+      delay(100);
+      leftMotor.run(Motor::MotorStop);
+      rightMotor.run(Motor::MotorStop);
+      if (measureright > measureleft){
+        Serial.println("right...");
+        leftMotor.setSpeed(10);
+        rightMotor.setSpeed(10);
+        rightMotor.run(Motor::MotorReverse);
+        leftMotor.run(Motor::MotorFoward);
+        delay(125);
+         leftMotor.run(Motor::MotorStop);
+        rightMotor.run(Motor::MotorStop);
+      }
+      else{
+        Serial.println("left...");
+        leftMotor.setSpeed(10);
+        rightMotor.setSpeed(10);
+        rightMotor.run(Motor::MotorFoward);
+        leftMotor.run(Motor::MotorReverse);
+        delay(125);
+        leftMotor.run(Motor::MotorStop);
+        rightMotor.run(Motor::MotorStop);
+
+      }
     }
+    else if(measurefront > measureleft && measurefront > measureright){ //if the front is clear
+      if (measureleft > 3 && measureright > 3){
+
+
+      }
+      else if (measureleft < 4 && measureright > measureleft){
+      //if (measureright > measureleft){
+        Serial.println("right...");
+        leftMotor.setSpeed(10);
+        rightMotor.setSpeed(10);
+        rightMotor.run(Motor::MotorReverse);
+        leftMotor.run(Motor::MotorFoward);
+        delay(125);
+         leftMotor.run(Motor::MotorStop);
+        rightMotor.run(Motor::MotorStop);
+      }
+      else{
+        Serial.println("left...");
+        leftMotor.setSpeed(10);
+        rightMotor.setSpeed(10);
+        rightMotor.run(Motor::MotorFoward);
+        leftMotor.run(Motor::MotorReverse);
+        delay(125);
+        leftMotor.run(Motor::MotorStop);
+        rightMotor.run(Motor::MotorStop);
+      }
+    } // end of front functions
+    else if(measureleft > measureright){
+
+      Serial.println("left...");
+      leftMotor.setSpeed(10);
+      rightMotor.setSpeed(10);
+      rightMotor.run(Motor::MotorFoward);
+      leftMotor.run(Motor::MotorReverse);
+      delay(125);
+      leftMotor.run(Motor::MotorStop);
+      rightMotor.run(Motor::MotorStop);
+    }// end of left functions
+    else if(measureright > measureleft){
+      Serial.println("right...");
+      leftMotor.setSpeed(10);
+      rightMotor.setSpeed(10);
+      rightMotor.run(Motor::MotorReverse);
+      leftMotor.run(Motor::MotorFoward);
+      delay(125);
+      leftMotor.run(Motor::MotorStop);
+      rightMotor.run(Motor::MotorStop);
+
+    }// right fucntions
+
+    /*
     else if (measureleft > measureright) {
       Serial.println("left...");
       leftMotor.setSpeed(10);
@@ -138,6 +250,8 @@ void loop()
     }
     leftMotor.setSpeed(100);
     rightMotor.setSpeed(100);
+
+
     /*
     if(measurefront < 1 && measureright < 1 && measureleft < 1 ){
       leftMotor.run(Motor::MotorStop);
@@ -145,7 +259,7 @@ void loop()
       delay(10000);
     }
     else{
-      if (measurefront > 7){
+      if (measurefront > measureleft && measurefront > measureright){
         Serial.println("foward...");
         leftMotor.run(Motor::MotorFoward);
          rightMotor.run(Motor::MotorFoward);
@@ -165,9 +279,7 @@ void loop()
       } // turn right*/
       tmMeasure = false;
     }//end of else of main function
- 
  // }
-  
   else {
     delay(2000);
     Serial.println("foward...");
