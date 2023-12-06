@@ -66,7 +66,8 @@ double Ultrasonic::measureIN() {
     inches = duration / 74.0;
   }
     
-  if (inches == 0){
+  if (inches == 0){ 
+    //ultrasonic wouldn't catch the incoming waves, so just set it to 40 which is the max distance. 
     inches = 40;
   }
   
