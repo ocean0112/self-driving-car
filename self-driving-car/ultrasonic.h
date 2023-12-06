@@ -46,8 +46,8 @@ unsigned long Ultrasonic::measure() {
   
   // wait for 
   pinMode(echoPin, INPUT);
-  duration = pulseIn(echoPin, HIGH,  maxDuration);
-  
+  duration = pulseIn(echoPin, HIGH,  maxDuration);  
+
   // turn interrupts back on
   interrupts();
   
@@ -62,9 +62,13 @@ double Ultrasonic::measureIN() {
   double inches = 0;
   
   unsigned long duration = measure();
-  
-  if (duration)
+  if (duration){
     inches = duration / 74.0;
+  }
+    
+  if (inches == 0){
+    inches = 40;
+  }
   
   return inches;
 } // measureIN
